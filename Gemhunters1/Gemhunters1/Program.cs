@@ -1,5 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using System;
+
 public class Position
 {
     public int X { get; set; }
@@ -11,6 +11,7 @@ public class Position
         Y = y;
     }
 }
+
 public class Player
 {
     public string Name { get; set; }
@@ -43,6 +44,7 @@ public class Player
         }
     }
 }
+
 public class Cell
 {
     public string Occupant { get; set; }
@@ -50,6 +52,118 @@ public class Cell
     public Cell(string occupant)
     {
         Occupant = occupant;
+    }
+}
+
+public class Board
+{
+    public Cell[,] Grid { get; set; }
+    private static Random rnd = new Random();
+
+    public Board(Player player1, Player player2)
+    {
+        Grid = new Cell[6, 6];
+
+        // Initialize empty cells
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                Grid[i, j] = new Cell("-");
+            }
+        }
+
+        // Place players
+        Grid[player1.Position.X, player1.Position.Y].Occupant = player1.Name;
+        Grid[player2.Position.X, player2.Position.Y].Occupant = player2.Name;
+
+        // Place obstacles
+        PlaceObstacles();
+
+        // Place gems
+        PlaceGems();
+    }
+
+    private void PlaceObstacles()
+    {
+        int obstacleCount = 5;
+        while (obstacleCount > 0)
+        {
+            int x = rnd.Next(6);
+            int y = rnd.Next(6);
+            if (Grid[x, y].Occupant == "-")
+            {
+                Grid[x, y].Occupant = "O";
+                obstacleCount--;
+            }
+        }
+    }
+
+    private void PlaceGems()
+    {
+        int gemCount = 10;
+        while (gemCount > 0)
+        {
+            int x = rnd.Next(6);
+            int y = rnd.Next(6);
+            if (Grid[x, y].Occupant == "-")
+            {
+                Grid[x, y].Occupant = "G";
+                gemCount--;
+            }
+        }
+    }
+
+    public void Display()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                Console.Write(Grid[i, j].Occupant + " ");
+            }
+            Console.WriteLine();
+        }
+    }
+
+    public bool IsValidMove(Player player, char direction)
+    {
+        int newX = player.Position.X;
+        int newY = player.Position.Y;
+
+        switch (direction)
+        {
+            case 'U':
+                newY -= 1;
+                break;
+            case 'D':
+                newY += 1;
+                break;
+            case 'L':
+                newX -= 1;
+                break;
+            case 'R':
+                newX += 1;
+                break;
+        }
+
+        return newX >= 0 && newX < 6 && newY >= 0 && newY < 6 && Grid[newX, newY].Occupant != "O";
+    }
+
+    public void CollectGem(Player player)
+    {
+        if (Grid[player.Position.X, player.Position.Y].Occupant == "G")
+        {
+            player.GemCount++;
+            Grid[player.Position.X, player.Position.Y].Occupant = "-";
+        }
+    }
+
+    public void UpdatePlayerPosition(Player player, char direction)
+    {
+        Grid[player.Position.X, player.Position.Y].Occupant = "-";
+        player.Move(direction);
+        Grid[player.Position.X, player.Position.Y].Occupant = player.Name;
     }
 }
 
