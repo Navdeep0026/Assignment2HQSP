@@ -2,6 +2,7 @@
 
 namespace GemHunters
 {
+    // Represents a position on the board
     public class Position
     {
         public int X { get; set; }
@@ -19,6 +20,7 @@ namespace GemHunters
         }
     }
 
+    // Represents a player in the game
     public class Player
     {
         public string Name { get; set; }
@@ -32,6 +34,7 @@ namespace GemHunters
             GemCount = 0;
         }
 
+        // Moves the player in the specified direction
         public void Move(char direction)
         {
             switch (direction)
@@ -44,6 +47,7 @@ namespace GemHunters
         }
     }
 
+    // Represents the game board
     public class Board
     {
         private const int Size = 6;
@@ -57,6 +61,7 @@ namespace GemHunters
             PlaceObstacles(3);
         }
 
+        // Initializes the board with empty spaces
         private void InitializeBoard()
         {
             for (int i = 0; i < Size; i++)
@@ -68,6 +73,7 @@ namespace GemHunters
             }
         }
 
+        // Places a specified number of gems on the board
         private void PlaceGems(int count)
         {
             for (int i = 0; i < count; i++)
@@ -76,6 +82,7 @@ namespace GemHunters
             }
         }
 
+        // Places a specified number of obstacles on the board
         private void PlaceObstacles(int count)
         {
             for (int i = 0; i < count; i++)
@@ -84,6 +91,7 @@ namespace GemHunters
             }
         }
 
+        // Places an item at a random empty position on the board
         private void PlaceRandom(char item)
         {
             int x, y;
@@ -96,16 +104,19 @@ namespace GemHunters
             board[x, y] = item;
         }
 
+        // Checks if a position contains a gem
         public bool IsGem(Position position)
         {
             return board[position.X, position.Y] == 'G';
         }
 
+        // Checks if a position contains an obstacle
         public bool IsObstacle(Position position)
         {
             return board[position.X, position.Y] == 'O';
         }
 
+        // Removes a gem from a specified position
         public void RemoveGem(Position position)
         {
             if (board[position.X, position.Y] == 'G')
@@ -114,6 +125,7 @@ namespace GemHunters
             }
         }
 
+        // Displays the board with player positions
         public void Display(Player p1, Player p2)
         {
             for (int i = 0; i < Size; i++)
@@ -152,9 +164,14 @@ namespace GemHunters
             {
                 board.Display(player1, player2);
                 Player currentPlayer = i % 2 == 0 ? player1 : player2;
-                Console.WriteLine($"{currentPlayer.Name}'s turn. Enter move (U, D, L, R):");
-                char move = Console.ReadKey().KeyChar;
-                Console.WriteLine();
+                char move;
+
+                do
+                {
+                    Console.WriteLine($"{currentPlayer.Name}'s turn. Enter move (U, D, L, R):");
+                    move = Char.ToUpper(Console.ReadKey().KeyChar);
+                    Console.WriteLine();
+                } while (move != 'U' && move != 'D' && move != 'L' && move != 'R');
 
                 Position oldPosition = new Position(currentPlayer.Position.X, currentPlayer.Position.Y);
                 currentPlayer.Move(move);
