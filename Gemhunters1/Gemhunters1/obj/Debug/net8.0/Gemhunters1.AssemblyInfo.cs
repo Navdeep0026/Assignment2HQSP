@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Gemhunters1")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4d3fccadfc28fe12cbc2630f4097bd45b28c8019")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ec098fa5d0b2ba545c29e043c6e39bb22bb8ae61")]
 [assembly: System.Reflection.AssemblyProductAttribute("Gemhunters1")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Gemhunters1")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
